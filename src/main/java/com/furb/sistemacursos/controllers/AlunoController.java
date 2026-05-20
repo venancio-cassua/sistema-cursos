@@ -2,6 +2,8 @@ package com.furb.sistemacursos.controllers;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,28 +27,37 @@ public class AlunoController {
 	}
 
 	@GetMapping()
-	public List<AlunoDto> listaAluno() {
+	public ResponseEntity<List<AlunoDto>> listaAluno() {
 
-		return this.alunoService.listaAluno();
+		//return this.alunoService.listaAluno();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(this.alunoService.listaAluno());
 	}
 
 	@GetMapping("/{id}")
-	public AlunoDto mostrarAlunoId(@PathVariable Long id) {
-		return alunoService.mostrarAlunoId(id);
+	public ResponseEntity<AlunoDto> mostrarAlunoId(@PathVariable Long id) {
+		//return alunoService.mostrarAlunoId(id);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(this.alunoService.mostrarAlunoId(id));
 	}
 
 	@PostMapping()
-	public AlunoDto cadastrarAlunos(@RequestBody AlunoDto aluno) {
-		return this.alunoService.cadastrarAlunos(aluno);
+	public ResponseEntity<AlunoDto> cadastrarAlunos(@RequestBody AlunoDto aluno) {
+		//return this.alunoService.cadastrarAlunos(aluno);
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.alunoService.cadastrarAlunos(aluno));
 	}
 
 	@PutMapping("/{id}")
-	public AlunoDto atualizarAluno(@PathVariable Long id, @RequestBody AlunoDto alunoDto) {
-		return this.alunoService.atualizarAluno(id, alunoDto);
+	public ResponseEntity<AlunoDto> atualizarAluno(@PathVariable Long id, @RequestBody AlunoDto alunoDto) {
+		//return this.alunoService.atualizarAluno(id, alunoDto);
+		return ResponseEntity.status(HttpStatus.OK).body(this.alunoService.atualizarAluno(id, alunoDto));
 	}
 
 	@DeleteMapping("/{id}")
-	public void excluirAluno(@PathVariable Long id) {
+	public ResponseEntity<Void> excluirAluno(@PathVariable Long id) {
 		this.alunoService.deletarAluno(id);
+		
+		return ResponseEntity.noContent().build();
+		
 	}
 }
