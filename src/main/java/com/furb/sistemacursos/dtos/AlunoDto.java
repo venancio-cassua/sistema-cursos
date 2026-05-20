@@ -31,7 +31,4 @@ public class AlunoDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-/*
- * implementar CRUD básico de Aluno e Curso
- */
 }
