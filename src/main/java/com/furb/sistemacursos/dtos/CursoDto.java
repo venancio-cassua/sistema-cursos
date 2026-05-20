@@ -1,5 +1,7 @@
 package com.furb.sistemacursos.dtos;
 
+import com.furb.sistemacursos.models.CursoModel;
+
 public class CursoDto {
 	
 	private String nome;
@@ -7,6 +9,15 @@ public class CursoDto {
 	private String descricao;
 	
 	private Integer cargaHoraria;
+	
+	public CursoDto() {
+	}
+	
+	public CursoDto(CursoModel curso) {
+		this.setNome(nome);
+		this.setDescricao(descricao);
+		this.setCargaHoraria(cargaHoraria);
+	}
 
 	public String getNome() {
 		return nome;

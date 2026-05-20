@@ -1,10 +1,20 @@
 package com.furb.sistemacursos.dtos;
 
+import com.furb.sistemacursos.models.AlunoModel;
+
 public class AlunoDto {
-	
+
 	private String nome;
 
 	private String email;
+
+	public AlunoDto() {
+	}
+
+	public AlunoDto(AlunoModel aluno) {
+		this.setNome(aluno.getNome());
+		this.setEmail(aluno.getEmail());
+	}
 
 	public String getNome() {
 		return nome;
