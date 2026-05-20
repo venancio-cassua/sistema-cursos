@@ -18,27 +18,67 @@ public class CursoService {
 	public CursoService(CursoRepository cursoRepository) {
 		this.cursoRepository = cursoRepository;
 	}
-	
-	
-	public List<CursoDto> listarCursos(){
-		
+
+	public List<CursoDto> listarCursos() {
+
 		List<CursoDto> cursos = new ArrayList<>();
-				
-		for( CursoModel curso : this.cursoRepository.findAll() ) {
+
+		for (CursoModel curso : this.cursoRepository.findAll()) {
 			cursos.add(new CursoDto(curso));
 		}
-		
+
 		return cursos;
 	}
-	
+
 	public CursoDto buscarCursoId(Long id) {
+		Optional<CursoModel> cursoOptional = this.cursoRepository.findById(id);
+
+		if (cursoOptional.isEmpty()) {
+			return null;
+		}
+		CursoDto curso = new CursoDto(cursoOptional.get());
+
+		return curso;
+	}
+
+	public CursoDto cadastrarCurso(CursoDto cursoDto) {
+		Optional<CursoModel> cursoOptional = this.cursoRepository.findByNome(cursoDto.getNome());
+
+		if (cursoOptional.isPresent()) {
+			// Curso ja esta cadastrado
+			return null;
+		}
+
+		CursoModel curso = new CursoModel();
+		curso.setNome(cursoDto.getNome());
+		curso.setDescricao(cursoDto.getDescricao());
+		curso.setCargaHoraria(cursoDto.getCargaHoraria());
+
+		return new CursoDto(this.cursoRepository.save(curso));
+	}
+	
+	public CursoDto atualizarCurso(Long id, CursoDto cursoDto) {
 		Optional<CursoModel> cursoOptional = this.cursoRepository.findById(id);
 		
 		if(cursoOptional.isEmpty()) {
 			return null;
 		}
-		CursoDto curso = new CursoDto(cursoOptional.get());
 		
-		return curso;
+		CursoModel curso = cursoOptional.get();
+		curso.setNome(cursoDto.getNome());
+		curso.setDescricao(cursoDto.getDescricao());
+		curso.setCargaHoraria(cursoDto.getCargaHoraria());
+		
+		return new CursoDto(this.cursoRepository.save(curso));
+	}
+	
+	public void detetarCurso(Long id) {
+		Optional<CursoModel> cursoOptional = this.cursoRepository.findById(id);
+		if(cursoOptional.isEmpty()) {
+			// Usuario nao existe
+			return ;
+		}
+		
+		this.cursoRepository.delete(cursoOptional.get());
 	}
 }

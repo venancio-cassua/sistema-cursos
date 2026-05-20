@@ -18,9 +18,9 @@ public class AlunoDto {
 
 	public String getNome() {
 		return nome;
-	}
+	} 
 
-	public void setNome(String nome) {
+	public void setNome(String nome) { 
 		this.nome = nome;
 	}
 
@@ -31,5 +31,7 @@ public class AlunoDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+/*
+ * implementar CRUD básico de Aluno e Curso
+ */
 }

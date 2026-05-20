@@ -14,9 +14,9 @@ public class CursoDto {
 	}
 	
 	public CursoDto(CursoModel curso) {
-		this.setNome(nome);
-		this.setDescricao(descricao);
-		this.setCargaHoraria(cargaHoraria);
+		this.setNome(curso.getNome());
+		this.setDescricao(curso.getDescricao());
+		this.setCargaHoraria(curso.getCargaHoraria());
 	}
 
 	public String getNome() {

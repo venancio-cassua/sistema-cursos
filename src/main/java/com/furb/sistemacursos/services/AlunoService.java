@@ -40,4 +40,45 @@ public class AlunoService {
 
 		return aluno;
 	}
+
+	public AlunoDto cadastrarAlunos(AlunoDto aluno) {
+		Optional<AlunoModel> alunoOptional = this.alunoRepository.findByEmail(aluno.getEmail());
+
+		if (alunoOptional.isPresent()) {
+			// Aluno já está cadastrado
+			return null;
+		}
+		AlunoModel alunoModel = new AlunoModel();
+		alunoModel.setNome(aluno.getNome());
+		alunoModel.setEmail(aluno.getEmail());
+
+		return new AlunoDto(this.alunoRepository.save(alunoModel));
+	}
+
+	public AlunoDto atualizarAluno(Long id, AlunoDto alunoDto) {
+		Optional<AlunoModel> alunoOptional = this.alunoRepository.findById(id);
+
+		if (alunoOptional.isEmpty()) {
+			// aluno não existe na base de dados, não tem como atualizar algo que não
+			// existe.
+			return null;
+		}
+
+		AlunoModel aluno = alunoOptional.get();
+		aluno.setNome(alunoDto.getNome());
+		aluno.setEmail(alunoDto.getEmail());
+
+		return new AlunoDto(this.alunoRepository.save(aluno));
+	}
+
+	public void deletarAluno(Long id) {
+		Optional<AlunoModel> alunoOptional = this.alunoRepository.findById(id);
+
+		if (alunoOptional.isEmpty()) {
+			System.out.println("Aluno não existente.");
+			return;
+		}
+
+		this.alunoRepository.delete(alunoOptional.get());
+	}
 }
