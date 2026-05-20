@@ -2,6 +2,8 @@ package com.furb.sistemacursos.controllers;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,29 +27,34 @@ public class CursoController {
 	} 
 
 	@GetMapping()
-	public List<CursoDto> listaCurso() {
+	public ResponseEntity< List<CursoDto>> listaCurso() {
 
-		return this.cursoService.listarCursos();
+		//return this.cursoService.listarCursos();
+		return ResponseEntity.status(HttpStatus.OK).body(this.cursoService.listarCursos());
 	}
 
 	@GetMapping("/{id}")
-	public CursoDto buscaCursoId(@PathVariable Long id) {
+	public ResponseEntity<CursoDto> buscaCursoId(@PathVariable Long id) {
 
-		return this.cursoService.buscarCursoId(id);
+		//return this.cursoService.buscarCursoId(id);
+		return ResponseEntity.status(HttpStatus.OK).body(this.cursoService.buscarCursoId(id));
 	}
 
 	@PostMapping()
-	public CursoDto cadastrarCurso(@RequestBody CursoDto curso) {
-		return this.cursoService.cadastrarCurso(curso);
+	public ResponseEntity<CursoDto> cadastrarCurso(@RequestBody CursoDto curso) {
+		//return this.cursoService.cadastrarCurso(curso);
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.cursoService.cadastrarCurso(curso));
 	}
 
 	@PutMapping("/{id}")
-	public CursoDto atualizarCurso(@PathVariable Long id, @RequestBody CursoDto curso) {
-		return this.cursoService.atualizarCurso(id, curso);
+	public ResponseEntity<CursoDto> atualizarCurso(@PathVariable Long id, @RequestBody CursoDto curso) {
+		//return this.cursoService.atualizarCurso(id, curso);
+		return ResponseEntity.status(HttpStatus.OK).body(this.cursoService.atualizarCurso(id, curso));
 	}
 
 	@DeleteMapping("/{id}")
-	public void detetarCurso(@PathVariable Long id) {
+	public ResponseEntity<Void> detetarCurso(@PathVariable Long id) {
 		this.cursoService.detetarCurso(id);
+		return ResponseEntity.noContent().build();
 	}
 }
