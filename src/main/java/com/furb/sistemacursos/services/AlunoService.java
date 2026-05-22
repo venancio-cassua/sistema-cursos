@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.furb.sistemacursos.dtos.AlunoDto;
+import com.furb.sistemacursos.exception.RecursoJaExistenteException;
+import com.furb.sistemacursos.exception.RecursoNaoEncontradoException;
 import com.furb.sistemacursos.models.AlunoModel;
 import com.furb.sistemacursos.repository.AlunoRepository;
 
@@ -30,24 +32,19 @@ public class AlunoService {
 	}
 
 	public AlunoDto mostrarAlunoId(Long id) {
-		Optional<AlunoModel> alunoOptional = alunoRepository.findById(id);
+		AlunoModel aluno = this.alunoRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Aluno não encontrado com id:" + id));
 
-		if (alunoOptional.isEmpty()) {
-			return null;
-		}
-
-		AlunoDto aluno = new AlunoDto(alunoOptional.get());
-
-		return aluno;
+		return new AlunoDto(aluno);
 	}
 
 	public AlunoDto cadastrarAlunos(AlunoDto aluno) {
-		Optional<AlunoModel> alunoOptional = this.alunoRepository.findByEmail(aluno.getEmail());
 
-		if (alunoOptional.isPresent()) {
+		if (this.alunoRepository.existsByEmail(aluno.getEmail())) {
 			// Aluno já está cadastrado
-			return null;
+			throw new RecursoJaExistenteException("Aluno já cadastrado: " + aluno.getEmail());
 		}
+
 		AlunoModel alunoModel = new AlunoModel();
 		alunoModel.setNome(aluno.getNome());
 		alunoModel.setEmail(aluno.getEmail());
@@ -56,15 +53,9 @@ public class AlunoService {
 	}
 
 	public AlunoDto atualizarAluno(Long id, AlunoDto alunoDto) {
-		Optional<AlunoModel> alunoOptional = this.alunoRepository.findById(id);
+		AlunoModel aluno = this.alunoRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Aluno não encontrado com id:" + id));
 
-		if (alunoOptional.isEmpty()) {
-			// aluno não existe na base de dados, não tem como atualizar algo que não
-			// existe.
-			return null;
-		}
-
-		AlunoModel aluno = alunoOptional.get();
 		aluno.setNome(alunoDto.getNome());
 		aluno.setEmail(alunoDto.getEmail());
 
@@ -72,13 +63,9 @@ public class AlunoService {
 	}
 
 	public void deletarAluno(Long id) {
-		Optional<AlunoModel> alunoOptional = this.alunoRepository.findById(id);
+		AlunoModel aluno = this.alunoRepository.findById(id).orElseThrow(
+				()-> new RecursoNaoEncontradoException("Aluno não encontrado com id:" + id));
 
-		if (alunoOptional.isEmpty()) {
-			System.out.println("Aluno não existente.");
-			return;
-		}
-
-		this.alunoRepository.delete(alunoOptional.get());
+		this.alunoRepository.delete(aluno);
 	}
 }

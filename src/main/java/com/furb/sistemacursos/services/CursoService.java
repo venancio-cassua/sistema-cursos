@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.furb.sistemacursos.dtos.CursoDto;
+import com.furb.sistemacursos.exception.RecursoJaExistenteException;
+import com.furb.sistemacursos.exception.RecursoNaoEncontradoException;
 import com.furb.sistemacursos.models.CursoModel;
 import com.furb.sistemacursos.repository.CursoRepository;
 
@@ -31,22 +33,16 @@ public class CursoService {
 	}
 
 	public CursoDto buscarCursoId(Long id) {
-		Optional<CursoModel> cursoOptional = this.cursoRepository.findById(id);
 
-		if (cursoOptional.isEmpty()) {
-			return null;
-		}
-		CursoDto curso = new CursoDto(cursoOptional.get());
+		CursoModel curso = this.cursoRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Curso não encontrado com id:" + id));
 
-		return curso;
+		return new CursoDto(curso);
 	}
 
 	public CursoDto cadastrarCurso(CursoDto cursoDto) {
-		Optional<CursoModel> cursoOptional = this.cursoRepository.findByNome(cursoDto.getNome());
-
-		if (cursoOptional.isPresent()) {
-			// Curso ja esta cadastrado
-			return null;
+		if (this.cursoRepository.existsByNome(cursoDto.getNome())) {
+			throw new RecursoJaExistenteException("Curso já cadastrado:" + cursoDto.getNome());
 		}
 
 		CursoModel curso = new CursoModel();
@@ -56,29 +52,25 @@ public class CursoService {
 
 		return new CursoDto(this.cursoRepository.save(curso));
 	}
-	
+
 	public CursoDto atualizarCurso(Long id, CursoDto cursoDto) {
 		Optional<CursoModel> cursoOptional = this.cursoRepository.findById(id);
-		
-		if(cursoOptional.isEmpty()) {
-			return null;
-		}
-		
-		CursoModel curso = cursoOptional.get();
+
+		CursoModel curso = this.cursoRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Curso não encontrado com id:" + id));
+
 		curso.setNome(cursoDto.getNome());
 		curso.setDescricao(cursoDto.getDescricao());
 		curso.setCargaHoraria(cursoDto.getCargaHoraria());
-		
+
 		return new CursoDto(this.cursoRepository.save(curso));
 	}
-	
+
 	public void detetarCurso(Long id) {
-		Optional<CursoModel> cursoOptional = this.cursoRepository.findById(id);
-		if(cursoOptional.isEmpty()) {
-			// Usuario nao existe
-			return ;
-		}
-		
-		this.cursoRepository.delete(cursoOptional.get());
+
+		CursoModel curso = this.cursoRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Curso não encontrado com id:" + id));
+
+		this.cursoRepository.delete(curso);
 	}
 }

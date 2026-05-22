@@ -8,5 +8,6 @@ import com.furb.sistemacursos.models.AlunoModel;
 
 public interface AlunoRepository extends JpaRepository<AlunoModel, Long> {
 	Optional<AlunoModel> findByEmail(String email);
+	boolean existsByEmail(String email);
 
 }

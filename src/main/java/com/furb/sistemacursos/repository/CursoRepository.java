@@ -9,4 +9,5 @@ import com.furb.sistemacursos.models.CursoModel;
 public interface CursoRepository extends JpaRepository<CursoModel, Long> {
 
 	Optional<CursoModel> findByNome(String nome);
+	boolean existsByNome(String nome);
 }
