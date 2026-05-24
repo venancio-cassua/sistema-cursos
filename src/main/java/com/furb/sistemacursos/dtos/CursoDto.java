@@ -3,20 +3,27 @@ package com.furb.sistemacursos.dtos;
 import com.furb.sistemacursos.models.CursoModel;
 
 public class CursoDto {
-	
+
+	private Long id;
+
 	private String nome;
-	
+
 	private String descricao;
-	
+
 	private Integer cargaHoraria;
-	
+
 	public CursoDto() {
 	}
-	
+
 	public CursoDto(CursoModel curso) {
-		this.setNome(curso.getNome());
-		this.setDescricao(curso.getDescricao());
-		this.setCargaHoraria(curso.getCargaHoraria());
+		this.id = curso.getId();
+		this.nome = curso.getNome();
+		this.descricao = curso.getDescricao();
+		this.cargaHoraria = curso.getCargaHoraria();
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getNome() {

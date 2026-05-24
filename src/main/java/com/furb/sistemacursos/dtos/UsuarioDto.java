@@ -4,6 +4,8 @@ import com.furb.sistemacursos.models.UsuarioModel;
 
 public class UsuarioDto {
 
+	private Long id;
+
 	private String login;
 
 	private String senha;
@@ -12,8 +14,13 @@ public class UsuarioDto {
 	}
 
 	public UsuarioDto(UsuarioModel usuario) {
+		this.id = usuario.getId();
 		this.login = usuario.getLogin();
 		this.senha = usuario.getSenha();
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getLogin() {

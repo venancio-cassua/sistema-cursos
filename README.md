@@ -106,6 +106,45 @@ Certifique-se de ter um MariaDB rodando na porta 3306 com o banco `cursos` criad
 ./mvnw spring-boot:run
 ```
 
+## Endpoints
+
+### `/aluno`
+| Método | Endpoint | Body | Retorno |
+|---|---|---|---|
+| GET | `/aluno` | — | `200 List<AlunoDto>` |
+| GET | `/aluno/{id}` | — | `200 AlunoDto` |
+| POST | `/aluno` | `AlunoDto` | `201 AlunoDto` |
+| PUT | `/aluno/{id}` | `AlunoDto` | `200 AlunoDto` |
+| DELETE | `/aluno/{id}` | — | `204 No Content` |
+
+```json
+{ "nome": "string", "email": "string" }
+```
+
+### `/curso`
+| Método | Endpoint | Body | Retorno |
+|---|---|---|---|
+| GET | `/curso` | — | `200 List<CursoDto>` |
+| GET | `/curso/{id}` | — | `200 CursoDto` |
+| POST | `/curso` | `CursoDto` | `201 CursoDto` |
+| PUT | `/curso/{id}` | `CursoDto` | `200 CursoDto` |
+| DELETE | `/curso/{id}` | — | `204 No Content` |
+
+```json
+{ "nome": "string", "descricao": "string", "cargaHoraria": 0 }
+```
+
+### `/usuario`
+| Método | Endpoint | Body | Retorno |
+|---|---|---|---|
+| GET | `/usuario` | — | `200 List<UsuarioDto>` |
+| GET | `/usuario/{id}` | — | `200 UsuarioDto` |
+| POST | `/usuario` | `UsuarioDto` | `201 UsuarioDto` |
+
+```json
+{ "login": "string", "senha": "string" }
+```
+
 ## Variáveis de Ambiente
 
 | Variável | Descrição | Padrão |

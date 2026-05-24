@@ -2,11 +2,12 @@ package com.furb.sistemacursos.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.furb.sistemacursos.dtos.UsuarioDto;
+import com.furb.sistemacursos.exception.RecursoJaExistenteException;
+import com.furb.sistemacursos.exception.RecursoNaoEncontradoException;
 import com.furb.sistemacursos.models.UsuarioModel;
 import com.furb.sistemacursos.repository.UsuarioRepository;
 
@@ -30,20 +31,15 @@ public class UsuarioService {
 	}
 
 	public UsuarioDto buscarUsuarioId(Long id) {
-		Optional<UsuarioModel> usuarioOptional = this.usuarioRepository.findById(id);
+		UsuarioModel usuario = this.usuarioRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado com id:" + id));
 
-		if (usuarioOptional.isEmpty()) {
-			return null;
-		}
-
-		return new UsuarioDto(usuarioOptional.get());
+		return new UsuarioDto(usuario);
 	}
 
 	public UsuarioDto cadastrarUsuario(UsuarioDto usuarioDto) {
-		Optional<UsuarioModel> usuarioOptional = this.usuarioRepository.findByLogin(usuarioDto.getLogin());
-
-		if (usuarioOptional.isPresent()) {
-			return null;
+		if (this.usuarioRepository.findByLogin(usuarioDto.getLogin()).isPresent()) {
+			throw new RecursoJaExistenteException("Usuário já cadastrado: " + usuarioDto.getLogin());
 		}
 
 		UsuarioModel usuario = new UsuarioModel();
@@ -51,6 +47,13 @@ public class UsuarioService {
 		usuario.setSenha(usuarioDto.getSenha());
 
 		return new UsuarioDto(this.usuarioRepository.save(usuario));
+	}
+
+	public void deletarUsuario(Long id) {
+		UsuarioModel usuario = this.usuarioRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado com id:" + id));
+
+		this.usuarioRepository.delete(usuario);
 	}
 
 }
