@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.furb.sistemacursos.dtos.UsuarioDto;
 import com.furb.sistemacursos.services.UsuarioService;
 
@@ -36,7 +38,7 @@ public class UsuarioController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<UsuarioDto> cadastrarUsuario(@RequestBody UsuarioDto usuarioDto) {
+	public ResponseEntity<UsuarioDto> cadastrarUsuario(@Valid @RequestBody UsuarioDto usuarioDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.usuarioService.cadastrarUsuario(usuarioDto));
 	}
 

@@ -2,10 +2,13 @@ package com.furb.sistemacursos.dtos;
 
 import com.furb.sistemacursos.models.CursoModel;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CursoDto {
 
 	private Long id;
 
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 
 	private String descricao;

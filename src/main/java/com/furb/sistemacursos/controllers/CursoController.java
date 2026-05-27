@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.furb.sistemacursos.dtos.CursoDto;
 import com.furb.sistemacursos.services.CursoService;
 
@@ -41,7 +43,7 @@ public class CursoController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<CursoDto> cadastrarCurso(@RequestBody CursoDto curso) {
+	public ResponseEntity<CursoDto> cadastrarCurso(@Valid @RequestBody CursoDto curso) {
 		//return this.cursoService.cadastrarCurso(curso);
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.cursoService.cadastrarCurso(curso));
 	}

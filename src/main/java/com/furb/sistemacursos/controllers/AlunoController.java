@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.furb.sistemacursos.dtos.AlunoDto;
 import com.furb.sistemacursos.services.AlunoService;
 
@@ -42,13 +44,13 @@ public class AlunoController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<AlunoDto> cadastrarAlunos(@RequestBody AlunoDto aluno) {
+	public ResponseEntity<AlunoDto> cadastrarAlunos(@Valid @RequestBody AlunoDto aluno) {
 		//return this.alunoService.cadastrarAlunos(aluno);
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.alunoService.cadastrarAlunos(aluno));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<AlunoDto> atualizarAluno(@PathVariable Long id, @RequestBody AlunoDto alunoDto) {
+	public ResponseEntity<AlunoDto> atualizarAluno(@PathVariable Long id, @Valid @RequestBody AlunoDto alunoDto) {
 		//return this.alunoService.atualizarAluno(id, alunoDto);
 		return ResponseEntity.status(HttpStatus.OK).body(this.alunoService.atualizarAluno(id, alunoDto));
 	}
